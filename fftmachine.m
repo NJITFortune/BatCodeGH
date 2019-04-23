@@ -1,4 +1,4 @@
-function out = fftmachine(data, Fs, smoothwindow)
+qfunction out = fftmachine(data, Fs, smoothwindow)
 % Compute the FFT (Fast Fourier Transform)
 % out = fftmachine(data, Fs, smoothwindow);
 % Where out is a strucutre with fftfreq and fftdata
