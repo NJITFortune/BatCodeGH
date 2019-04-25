@@ -51,7 +51,7 @@ for j = length(startIDXs):-1:1
     for k = length(startims):-1:1
         ttt = find(tim > startims(k) & tim < startims(k) + windowidth);
         tmp = fftcalculator(hpSIG(ttt), Fs);
-        out(j).traceTIM(k) = mean(tim(ttt)) - out(j).tims(1);
+        out(j).traceTIM(k) = tim(ttt) - out(j).tims(1);
             [out(j).traceAMP, idx] = max(tmp.fftdata);
         out(j).traceFREQ(k) = tmp.fftfreqs(idx);    
     end
