@@ -43,9 +43,13 @@ for j = length(startIDXs):-1:1
     out(j).fft = fftcalculator(hpSIG(startIDXs(j):endIDXs(j)), Fs);
    
     % Make the frequency trace
-    stepsize = 0.001;
-    for k = floor((out(j).tims(2) - out(j).tims(1)) / stepsize):-1:2        
-        ttt = find(tim > out(j).tims(1) + stepsize*(k-1) & tim > out(j).tims(1) + stepsize*(k));
+    stepsize =   0.0005; 
+    windowidth = 0.005;
+    
+    startims = out(j).tims(1) - windowidth:stepsize:out(j).tims(2);
+    
+    for k = length(startims):-1:1
+        ttt = find(tim > startims(j) & tim < startims + windowidth);
         tmp = fftcalculator(hpSIG(ttt), Fs);
         out(j).traceTIM(k) = mean(tim(ttt)) - out(j).tims(1);
             [out(j).traceAMP, idx] = max(tmp.fftdata);
