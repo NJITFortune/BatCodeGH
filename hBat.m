@@ -49,7 +49,7 @@ for j = length(startIDXs):-1:1
     startims = out(j).tims(1) - windowidth:stepsize:out(j).tims(2);
     
     for k = length(startims):-1:1
-        ttt = find(tim > startims(j) & tim < startims + windowidth);
+        ttt = find(tim > startims(j) & tim < startims(j) + windowidth);
         tmp = fftcalculator(hpSIG(ttt), Fs);
         out(j).traceTIM(k) = mean(tim(ttt)) - out(j).tims(1);
             [out(j).traceAMP, idx] = max(tmp.fftdata);
