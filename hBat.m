@@ -31,6 +31,9 @@ z(hHP > ylevel) = 1;
     if startIDXs(1) > endIDXs(1); endIDXs = endIDXs(2:end); end
     if startIDXs(end) < endIDXs(end); startIDXs = startIDXs(1:end-1); end
     
+fprintf('Found %i bat events. \n', length(startIDXs));    
+    
+    
 % Construct the output structure: Data for each vocalization
 for j = length(startIDXs):-1:1
    
@@ -39,7 +42,7 @@ for j = length(startIDXs):-1:1
     
     out(j).fft = fftcalculator(hpSIG(startIDXs(j):endIDXs(j)), Fs);
    
-    % Make the trace
+    % Make the frequency trace
     stepsize = 0.001;
     for k = floor((out(j).tims(2) - out(j).tims(1)) / stepsize):-1:2        
         ttt = find(tim > out(j).tims(1) + stepsize*(k-1) & tim > out(j).tims(1) + stepsize*(k));
