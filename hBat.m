@@ -57,7 +57,10 @@ for j = length(startIDXs):-1:1
     end
 end
 
+% Plot random selection of up to 9 events
 
+if length(startIDXs) > 9
+    listofevents = randn(9, 
 
 
 function fftout = fftcalculator(data, Fs)
