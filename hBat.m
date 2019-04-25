@@ -59,8 +59,8 @@ end
 
 % Plot random selection of up to 9 events
 
-if length(startIDXs) > 9
-    listofevents = randn(9, 
+% if length(startIDXs) > 9
+%     listofevents = randn(9, 
 
 
 function fftout = fftcalculator(data, Fs)
