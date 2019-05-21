@@ -4,7 +4,7 @@
 #When using frequency data alone, you need to specify a sample frequency. This function relies on the
 #imagep() function from oce. specplot() uses custom color palletes with 30 colors. Most parameters have defaults
 #and do not need to be specified by the user.
-
+#parameters
 specplot = function(freq_data, Fs, nfft, wl, ovlp, normal = TRUE, amp_range, color, amp_value = FALSE) {
   #requires tuneR (if using wave file for input), signal (to produce spectro data), and oce (for plotting)
   #freq _data may be list of frequencies or wav file
