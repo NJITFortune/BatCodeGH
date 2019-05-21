@@ -1,12 +1,17 @@
+#This function will plot spectrograms. It works with either a wav file read by tuneR or frequency data.
+#When using frequency data alone, you need to specify a sample frequency. This function relies on the
+#imagep() function from oce. specplot() uses custom color palletes with 30 colors. Most parameters have defaults
+#and do not need to be specified by the user.
+
 specplot = function(freq_data, Fs, nfft, wl, ovlp, normal = TRUE, amp_range, color, amp_value = FALSE) {
   #requires tuneR (if using wave file for input), signal (to produce spectro data), and oce (for plotting)
   #freq _data may be list of frequencies or wav file
   #if sample rate is provided in wav, it does not need to be specified, otherwise it MUST be given
   #all other parameters are optional and have defaults
   #nfft, wl are input in points
-  #ovlp is input in percent 
-  
-  #create 2 custom palletes for graphing 
+  #ovlp is input in percent
+
+  #create 2 custom palletes for graphing
   heat_col_custom = c("#FFFFFF","#FFFBCC","#FFF8A0","#FFF572","#FFF24A","#FFF028","#FFEC00","#FFEC00","#FFE100","#FFD600","#FFBF00","#FFA900","#FF9D00","#FF8700","#FF7C00","#FF6500","#FF4F00","#FF4300","#FF3800","#FF0000","#E30000","#D00000","#BD0000","#9C0000","#850000","#520000","#3E0000","#270000","#130000","#000000")
   #heat color alternate pallete
   #c("#FFFFFF","#FFF254","#FFF700","#FFEC00","#FFE100","#FFD600","#FFBF00","#FFA900","#FF9D00","#FF8700","#FF7C00","#FF7000","#FF6500","#FF4F00","#FF4300","#FF3800","#FF2D00","#FF1600","#FF0B00","#FF0000","#E30000","#D00000", "#BD0000","#9C0000","#850000","#520000","#3E0000","#270000","#130000", "#000000")
@@ -17,21 +22,21 @@ specplot = function(freq_data, Fs, nfft, wl, ovlp, normal = TRUE, amp_range, col
   } else {
     Fs = Fs
   }
-  
-  
+
+
   #checks if nfft is given, if not substitutes default value
   if(missing(nfft)) {
     nfft = 512
   } else {
     nfft = nfft
   }
- 
+
   #checks if wl is given, if not substitutes default value
   if(missing(wl)) {
     wl = nfft/2
   } else {
     wl = wl
-  } 
+  }
 
   #checks if ovlp is given, if not substitutes default value
   if(missing(ovlp)) {
@@ -39,7 +44,7 @@ specplot = function(freq_data, Fs, nfft, wl, ovlp, normal = TRUE, amp_range, col
   } else {
     ovlp = (ovlp/100) * wl
   }
-  
+
   #check to see if input file is .wav.
   #if .wav, extract freq data, else directly use the data provided
   if(isS4(freq_data) == TRUE) {
@@ -50,41 +55,41 @@ specplot = function(freq_data, Fs, nfft, wl, ovlp, normal = TRUE, amp_range, col
 
   #remove offset
   snd = snd - mean(snd)
-  
-  #produce spectrogram of data using signal function  
-  ##MUST HAVE SIGNAL INSTALLED 
+
+  #produce spectrogram of data using signal function
+  ##MUST HAVE SIGNAL INSTALLED
   spec = specgram(snd, nfft, Fs, wl, ovlp)
-  
+
   #remove phase info
   P = abs(spec$S)
-  
+
   #normalize
   if(normal) {
     P = P/max(P)
   }
-  
+
   #convert to dB
   P = 10*log10(P)
-  
+
   #extract time
   t = spec$t
-  
-  #output amp values 
+
+  #output amp values
   if(amp_value) {
     print(max(t(P)))
     print(min(t(P)))
   }
-  
-  
-  #check if user entered zlim parameter or set default 
+
+
+  #check if user entered zlim parameter or set default
   bottom_amp = 0.6
-  top_amp = 1 
+  top_amp = 1
   if(missing(amp_range)) {
     amp_range = c(min(t(P))*bottom_amp, max(t(P))*top_amp)
   } else {
     amp_range = amp_range
   }
-  
+
   #set color pallete, default is heat, 1 = greyscale, 2 = heat, 3 = rev heat, 4 = rev greyscale
   if(missing(color)) {
     col_select = rev(heat_col_custom)
@@ -93,7 +98,7 @@ specplot = function(freq_data, Fs, nfft, wl, ovlp, normal = TRUE, amp_range, col
     par(col.lab="black")
     par(col.axis="black")
     par(col.main="black")
-  } else { 
+  } else {
     if(color == 3){
       col_select = greyscale_custom
       box_col = "Black"
@@ -131,14 +136,13 @@ specplot = function(freq_data, Fs, nfft, wl, ovlp, normal = TRUE, amp_range, col
     }
   }
   #plot
-  imagep(x = t, y = spec$f, z = t(P), 
+  imagep(x = t, y = spec$f, z = t(P),
         zlim = amp_range,
-        col = col_select, 
-        ylab = "Frequency [Hz]", 
+        col = col_select,
+        ylab = "Frequency [Hz]",
         xlab = "Time [s]",
         drawPalette = FALSE,
         decimate = FALSE)
   box(col = box_col)
 }
 
-  
